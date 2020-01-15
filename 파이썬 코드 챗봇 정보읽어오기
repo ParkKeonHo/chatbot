@@ -22,3 +22,31 @@ def index():
 
 if __name__ == '__main__':
     app.run(debug=True, port='5000')#default portnumber : 5000
+
+//version2 final pizza bot
+#-*- coding : utf-8
+from flask import Flask, make_response, request
+import pprint
+
+app = Flask(__name__)
+#웹 서버 주소 설정, '/aaa'설정시 -> 'http://127/0/0/1"5001/aaa' 로 서버 접속
+@app.route('/', methods=['POST', 'GET'])
+def process_webhook():
+    body = request.json
+    query_result = body['queryResult']
+    query_outputContexts = query_result['outputContexts'][0]['parameters']
+    print(type(query_outputContexts))
+    t = "메뉴:{menu}, 수량:{sooryang}, 주소:{jooso}"
+    print(t.format(menu=query_outputContexts['pizza_menu'], sooryang=query_outputContexts['number'],
+                                                        jooso=query_outputContexts['address']))
+    # print("주문 정보 :" + "주소("+query_address+")"+"사이즈("+query_size+")"+"색상("+query_color+")")
+    # #전체 json데이터 출력
+    # #pprint.pprint(body)
+    # print("\n\n\n")
+    return "OK"
+
+def index():
+    return "Hello World!"
+
+if __name__ == '__main__':
+    app.run(debug=True, port='5000')#default portnumber : 5000
